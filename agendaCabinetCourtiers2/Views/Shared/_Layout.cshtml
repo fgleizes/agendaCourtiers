@@ -7,8 +7,6 @@
     <link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <link href="~/Content/font-awesome.min.css" rel="stylesheet" type="text/css" />
-    @*<script src="~/Scripts/bootstrap.bundle.min.js"></script>*@
-    @*<script src="~/Scripts/modernizr-2.8.3.js"></script>*@
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
@@ -41,127 +39,6 @@
 
     <script src="~/Scripts/bootstrap.bundle.min.js"></script>
     <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-1.9.0.min.js"></script>
-    <script>
-        $(function () {
-            $(".showModal").on("click", function (e) {
-                let url = $(e.currentTarget).attr('href')
-
-                $.get(url, function (data) {
-                    $('#contentModal').html(data)
-
-                    let inputs = $('.editForm .form-control')
-
-                    $(".editForm").on("submit", function (e) {
-                        e.preventDefault()
-                        let url = $(e.currentTarget).attr('action')
-                        let formValues = $(e.currentTarget).serialize();
-
-                        $.ajax({
-                            url: url,
-                            type: 'POST',
-                            dataType: 'json',
-                            data: formValues,
-                            success: function (data) {
-                                console.log("xhr success")
-                                if (data.success == true) {
-                                    console.log(window.location)
-                                    window.location.reload(true)
-                                } else {
-                                    let $ul = $('div.validation-summary-valid.text-danger > ul');
-                                    $ul.empty();
-                                    $ul.append('<li>Veuillez corriger les erreurs et re-valider le formulaire.</li>');
-                                    displayValidationErrors(inputs)
-                                    @*displayValidationErrors(inputs, data.errors)*@
-                                }
-                            },
-                            error: function () {
-                                console.log("xhr error")
-                            }
-                        })
-                    })
-
-                    $(".editForm input").on("input", () => displayValidationErrors(inputs))
-
-                    
-
-                    @*$(".editForm input").on("input", function (e) {
-                        let inputs = $('.editForm .form-control')
-
-                        inputs.each(function (index, input) {
-                            let fieldValidation = input.nextElementSibling
-
-                            if (fieldValidation.hasChildNodes()) {
-                                fieldValidation.removeChild(fieldValidation.firstChild)
-                            }
-
-                            if (input.dataset.valRequired && input.value == "") {
-                                let span = document.createElement("span");
-                                span.innerHTML = input.dataset.valRequired
-                                fieldValidation.append(span)
-
-                            } else if (input.dataset.valRegexPattern && !input.value.match(input.dataset.valRegexPattern)) {
-                                let span = document.createElement("span");
-                                span.innerHTML = input.dataset.valRegex
-                                fieldValidation.append(span)
-
-                            } else if (input.dataset.valLengthMax && input.value.length > 50) {
-                                let span = document.createElement("span");
-                                span.innerHTML = input.dataset.valLength
-                                fieldValidation.append(span)
-                            }
-                        })
-                    })*@
-                })
-            })
-
-            $("#modalCustomers").on("hidden.bs.modal", () => $("#contentModal").empty())
-
-            function displayValidationErrors(inputs) {
-                @* let $ul = $('div.validation-summary-valid.text-danger > ul');
-
-                $ul.empty();
-                $.each(errors, function (idx, errorMessage) {
-                    $ul.append('<li>' + errorMessage + '</li>');
-                });*@
-
-                        @* let inputs = $('.editForm .form-control') *@
-
-                inputs.each(function (index, input) {
-                    let fieldValidation = input.nextElementSibling
-
-                    if (fieldValidation.hasChildNodes()) {
-                        fieldValidation.removeChild(fieldValidation.firstChild)
-                    }
-
-                    if (input.dataset.valRequired && input.value == "") {
-                        let span = document.createElement("span");
-                        span.innerHTML = input.dataset.valRequired
-                        fieldValidation.append(span)
-
-                    } else if (input.dataset.valRegexPattern && !input.value.match(input.dataset.valRegexPattern)) {
-                        let span = document.createElement("span");
-                        span.innerHTML = input.dataset.valRegex
-                        fieldValidation.append(span)
-
-                    } else if (input.dataset.valLengthMax && input.value.length > 50) {
-                        let span = document.createElement("span");
-                        span.innerHTML = input.dataset.valLength
-                        fieldValidation.append(span)
-                    }
-                })
-            }
-        })
-    </script>
-    @*@if (TempData.ContainsKey("errorForm"))
-    {
-        String errorForm = TempData["errorForm"].ToString();
-        if (errorForm == "1")
-        {
-            <script>
-                let detailsModal = new bootstrap.Modal(document.getElementById('detailsModal'))
-                detailsModal.show()
-            </script>
-        }
-    }*@
+    <script src="~/Scripts/JavaScript.js"></script>
 </body>
 </html>
