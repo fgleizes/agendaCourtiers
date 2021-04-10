@@ -1,0 +1,88 @@
+﻿@model agendaCabinetCourtiers2.Models.customers
+
+@{
+    ViewBag.Title = "Détails du client";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    Html.RenderPartial("EditCustomer");
+    Html.RenderPartial("DeleteCustomer");
+}
+
+<p class="my-5">
+    @Html.ActionLink("Retour à la liste", "ListCustomers", "Customers", new { area = "" }, new { @class = "btn btn-outline-secondary" })
+</p>
+<div class="card text-center my-3">
+    <div class="card-header position-relative">
+        <h2 class="card-title my-2">@ViewBag.Title</h2>
+        <p class="position-absolute top-50 end-0 translate-middle-y fs-5 fw-bolder pe-3">ID: @Html.DisplayFor(model => model.idCustomers)</p>
+    </div>
+    <div class="card-body">
+        <p class="card-text">@Html.DisplayNameFor(model => model.lastname) : @Html.DisplayFor(model => model.lastname)</p>
+        <p class="card-text">@Html.DisplayNameFor(model => model.firstname) : @Html.DisplayFor(model => model.firstname)</p>
+        <p class="card-text">@Html.DisplayNameFor(model => model.mail) : <a href="mailto:@Html.DisplayFor(model => model.mail)" title="Envoyer un email">@Html.DisplayFor(model => model.mail)</a></p>
+        <p class="card-text">@Html.DisplayNameFor(model => model.phoneNumber) : <a href="tel:@Html.DisplayFor(model => model.phoneNumber)">@Html.DisplayFor(model => model.phoneNumber)</a></p>
+        <p class="card-text">@Html.DisplayNameFor(model => model.budget) : @Html.DisplayFor(model => model.budget)€</p>
+    </div>
+    <div class="card-footer">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#detailsModal">Modifier</button>
+        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">Supprimer</button>
+    </div>
+</div>
+
+@if (TempData.ContainsKey("messageEditCustomer"))
+{
+    <p class="alert alert-success">@TempData["messageEditCustomer"]</p>
+}
+
+@*<h2>Details</h2>
+
+<div>
+    <h4>customers</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.lastname)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.lastname)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.firstname)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.firstname)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.mail)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.mail)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.phoneNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.phoneNumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.budget)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.budget)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.idCustomers }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>*@

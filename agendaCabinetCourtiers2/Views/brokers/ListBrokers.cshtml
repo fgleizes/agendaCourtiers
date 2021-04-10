@@ -1,0 +1,62 @@
+﻿@model IEnumerable<agendaCabinetCourtiers2.Models.brokers>
+
+@{
+    ViewBag.Title = "Liste des courtiers";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2 class="mt-5 mb-4">@ViewBag.Title</h2>
+
+<p>
+    @Html.ActionLink("Ajouter un courtier", "AddBroker", "", new { @class = "btn btn-outline-secondary" })
+</p>
+<table class="table table-striped table-hover align-middle my-3">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.lastname)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.firstname)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.mail)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.phoneNumber)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+
+    @foreach (var broker in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => broker.lastname)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => broker.firstname)
+            </td>
+            <td>
+                <a href="mailto:@Html.DisplayFor(modelItem => broker.mail)" title="Envoyer un email">@Html.DisplayFor(modelItem => broker.mail)</a>
+            </td>
+            <td>
+                <a href="tel:@Html.DisplayFor(modelItem => broker.phoneNumber)" title="Appeler le numéro de téléphone">@Html.DisplayFor(modelItem => broker.phoneNumber)</a>
+            </td>
+
+            <td>
+                @Html.ActionLink("Voir détails", "ProfilBroker", new { id = broker.idBroker }, new { @class = "btn btn-outline-info" })
+            </td>
+        </tr>
+    }
+</table>
+
+@if (TempData.ContainsKey("messageAddBroker"))
+{
+    <p class="alert alert-success">@TempData["messageAddBroker"]</p>
+}
+@if (TempData.ContainsKey("messageDeleteBroker"))
+{
+    <p class="alert alert-danger">@TempData["messageDeleteBroker"]</p>
+}

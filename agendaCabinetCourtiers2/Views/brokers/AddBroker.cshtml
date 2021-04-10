@@ -1,0 +1,49 @@
+﻿@model agendaCabinetCourtiers2.Models.brokers
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Créer un courtier";
+}
+
+<div>
+    <p class="mt-4">
+        @Html.ActionLink("Retour à la liste", "ListBrokers", "brokers", new { area = "" }, new { @class = "btn btn-outline-secondary" })
+    </p>
+
+    <h2 class="text-center">@ViewBag.Title</h2>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        <div class="row g-3 mt-5">
+            <h3>Courtier :</h3>
+            <hr />
+            @Html.ValidationSummary(true, "Veuillez corriger les erreurs et re-valider le formulaire.", new { @class = "text-danger" })
+
+            <div class="col-md-6">
+                @Html.LabelFor(model => model.lastname, htmlAttributes: new { @class = "control-label" })
+                @Html.EditorFor(model => model.lastname, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.lastname, "", new { @class = "text-danger" })
+            </div>
+            <div class="col-md-6">
+                @Html.LabelFor(model => model.firstname, htmlAttributes: new { @class = "control-label" })
+                @Html.EditorFor(model => model.firstname, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.firstname, "", new { @class = "text-danger" })
+            </div>
+            <div class="col-md-6">
+                @Html.LabelFor(model => model.mail, htmlAttributes: new { @class = "control-label" })
+                @Html.EditorFor(model => model.mail, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.mail, "", new { @class = "text-danger" })
+            </div>
+            <div class="col-md-6">
+                @Html.LabelFor(model => model.phoneNumber, htmlAttributes: new { @class = "control-label" })
+                @Html.EditorFor(model => model.phoneNumber, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.phoneNumber, "", new { @class = "text-danger" })
+            </div>
+            <div class="col-12 my-5">
+                <button type="submit" class="btn btn-success">Valider le courtier</button>
+                <button type="reset" class="btn btn-secondary">Annuler</button>
+            </div>
+        </div>
+    }
+</div>

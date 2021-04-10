@@ -1,0 +1,36 @@
+﻿@model agendaCabinetCourtiers2.Models.brokers
+
+@{
+    ViewBag.Title = "Détails du courtier";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    Html.RenderPartial("EditBroker");
+    Html.RenderPartial("DeleteBroker");
+}
+
+<p class="my-5">
+    @Html.ActionLink("Retour à la liste", "ListBrokers", "brokers", new { area = "" }, new { @class = "btn btn-outline-secondary" })
+</p>
+<div class="card text-center my-3">
+    <div class="card-header position-relative">
+        <h2 class="card-title mt-2 mb-3">@ViewBag.Title</h2>
+        <p class="position-absolute top-50 end-0 translate-middle-y fs-5 fw-bolder pe-3">ID: @Html.DisplayFor(model => model.idBroker)</p>
+    </div>
+    <div class="card-body">
+        <p class="card-text">@Html.DisplayNameFor(model => model.lastname) : @Html.DisplayFor(model => model.lastname)</p>
+        <p class="card-text">@Html.DisplayNameFor(model => model.firstname) : @Html.DisplayFor(model => model.firstname)</p>
+        <p class="card-text">@Html.DisplayNameFor(model => model.mail) : <a href="mailto:@Html.DisplayFor(model => model.mail)" title="Envoyer un email">@Html.DisplayFor(model => model.mail)</a></p>
+        <p class="card-text">@Html.DisplayNameFor(model => model.phoneNumber) : <a href="tel:@Html.DisplayFor(model => model.phoneNumber)" title="Appeler le numéro de téléphone">@Html.DisplayFor(model => model.phoneNumber)</a></p>
+    </div>
+    <div class="card-footer">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#detailsModal">Modifier</button>
+        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">Supprimer</button>
+    </div>
+</div>
+
+@if (TempData.ContainsKey("messageEditBroker"))
+{
+    <p class="alert alert-success">@TempData["messageEditBroker"]</p>
+}
