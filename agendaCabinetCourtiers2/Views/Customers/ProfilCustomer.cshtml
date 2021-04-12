@@ -4,14 +4,14 @@
     ViewBag.Title = "Détails du client";
     Layout = "~/Views/Shared/_Layout.cshtml";
 
-    Html.RenderPartial("EditCustomer");
-    Html.RenderPartial("DeleteCustomer");
+    @*Html.RenderPartial("EditCustomer");*@
+    @*Html.RenderPartial("DeleteCustomer");*@
 }
 
 <p class="my-5">
     @Html.ActionLink("Retour à la liste", "ListCustomers", "Customers", new { area = "" }, new { @class = "btn btn-outline-secondary" })
 </p>
-<div class="card text-center my-3">
+<div class="card my-3">
     <div class="card-header position-relative">
         <h2 class="card-title my-2">@ViewBag.Title</h2>
         <p class="position-absolute top-50 end-0 translate-middle-y fs-5 fw-bolder pe-3">ID: @Html.DisplayFor(model => model.idCustomers)</p>
@@ -24,8 +24,31 @@
         <p class="card-text">@Html.DisplayNameFor(model => model.budget) : @Html.DisplayFor(model => model.budget)€</p>
     </div>
     <div class="card-footer">
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#detailsModal">Modifier</button>
-        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">Supprimer</button>
+        <div class="buttons text-center">
+            @*<button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#detailsModal"><i class="fa fa-pencil" aria-hidden="true"></i></button>*@
+            @*<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="fa fa-trash" aria-hidden="true"></i></button>*@
+            <a href="@Url.Action("EditCustomer", "Customers", new { id = Model.idCustomers })" title="Modifier le client" class="btn btn-outline-dark showModal" type="button" data-bs-toggle="modal" data-bs-target="#modalCustomers"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+            <a href="@Url.Action("ModalDeleteAction", "Customers", new { id = Model.idCustomers })" title="Supprimer le client" class="btn btn-danger showModal" type="button" data-bs-toggle="modal" data-bs-target="#modalCustomers"><i class="fa fa-trash" aria-hidden="true"></i></a>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalCustomers" tabindex="-1" aria-labelledby="titleModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" id="contentModal">
+            @*<div class="modal-header">
+                <h3 class="modal-title" id="titleModal">Titre du modal</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row g-3 my-3">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-success">Modifier</button>
+                <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+            </div>*@
+        </div>
     </div>
 </div>
 
@@ -33,56 +56,3 @@
 {
     <p class="alert alert-success">@TempData["messageEditCustomer"]</p>
 }
-
-@*<h2>Details</h2>
-
-<div>
-    <h4>customers</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.lastname)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.lastname)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.firstname)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.firstname)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.mail)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.mail)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.phoneNumber)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.phoneNumber)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.budget)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.budget)
-        </dd>
-
-    </dl>
-</div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.idCustomers }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>*@

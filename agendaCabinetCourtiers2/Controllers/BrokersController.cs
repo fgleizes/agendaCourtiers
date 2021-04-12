@@ -11,7 +11,7 @@ namespace agendaCabinetCourtiers2.Controllers
 {
     public class BrokersController : Controller
     {
-        private agendaEntities db = new agendaEntities();
+        private readonly agendaEntities db = new agendaEntities();
 
         [ActionName("ListBrokers")]
         public ActionResult Index()

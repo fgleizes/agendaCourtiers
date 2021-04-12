@@ -44,7 +44,7 @@ namespace agendaCabinetCourtiers2.Models
         public string phoneNumber { get; set; }
 
         [Display(Name = "Budget")]
-        public int budget { get; set; }
+        public int? budget { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<appointments> appointments { get; set; }

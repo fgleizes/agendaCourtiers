@@ -3,7 +3,6 @@
 @{
     ViewBag.Title = "Liste des clients";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    @*Html.RenderPartial("DeleteCustomer");*@
 }
 
 <h2 class="mt-5 mb-4">@ViewBag.Title</h2>
@@ -11,58 +10,96 @@
 <p>
     @Html.ActionLink("Ajouter un client", "AddCustomer", new { area = "" }, new { @class = "btn btn-outline-secondary" })
 </p>
-<table class="table table-striped table-hover align-middle my-3">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.lastname)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.firstname)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.mail)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.phoneNumber)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.budget)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
+<div class="table-responsive">
+    <table class="table table-striped table-hover align-middle my-3">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.lastname)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.firstname)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.mail)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.phoneNumber)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.budget)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
 
-    @foreach (var customer in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => customer.lastname)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => customer.firstname)
-            </td>
-            <td>
-                <a href="mailto:@Html.DisplayFor(modelItem => customer.mail)" title="Envoyer un email">@Html.DisplayFor(modelItem => customer.mail)</a>
-            </td>
-            <td>
-                <a href="tel:@Html.DisplayFor(modelItem => customer.phoneNumber)" title="Appeler le numéro de téléphone">@Html.DisplayFor(modelItem => customer.phoneNumber)</a>
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => customer.budget)€
-            </td>
-            <td>
-                @Html.ActionLink("Voir détails", "ProfilCustomer", new { id = customer.idCustomers }, new { @class = "btn btn-outline-info" })
-                @*<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">Supprimer @customer.idCustomers</button>*@
-            </td>
-        </tr>
-    }
-</table>
+        @foreach (var customer in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => customer.lastname)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => customer.firstname)
+                </td>
+                <td>
+                    <a href="mailto:@Html.DisplayFor(modelItem => customer.mail)" title="Envoyer un email">@Html.DisplayFor(modelItem => customer.mail)</a>
+                </td>
+                <td>
+                    <a href="tel:@Html.DisplayFor(modelItem => customer.phoneNumber)" title="Appeler le numéro de téléphone">@Html.DisplayFor(modelItem => customer.phoneNumber)</a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => customer.budget)€
+                </td>
+                <td>
+                    <a href="@Url.Action("ProfilCustomer", "Customers", new { id = customer.idCustomers })" title="Consulter le détail du client" class="btn btn-outline-secondary"><i class="fa fa-search" aria-hidden="true"></i></a>
+                    <a href="@Url.Action("EditCustomer", "Customers", new { id = customer.idCustomers })" title="Modifier le client" class="btn btn-outline-dark showModal" type="button" data-bs-toggle="modal" data-bs-target="#modalCustomers"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                    <a href="@Url.Action("ModalDeleteAction", "Customers", new { id = customer.idCustomers })" title="Supprimer le client" class="btn btn-danger showModal" type="button" data-bs-toggle="modal" data-bs-target="#modalCustomers"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                </td>
+            </tr>
+        }
+    </table>
+</div>
 
-@if (TempData.ContainsKey("messageAddCustomer"))
+<div class="modal fade" id="modalCustomers" tabindex="-1" aria-labelledby="titleModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" id="contentModal"></div>
+    </div>
+</div>
+
+@if (TempData.ContainsKey("messageAddCustomer") || TempData.ContainsKey("messageEditCustomer"))
 {
-    <p class="alert alert-success">@TempData["messageAddCustomer"]</p>
+    <p class="alert alert-success alert-dismissible fade show">
+        @TempData["messageAddCustomer"]
+        @TempData["messageEditCustomer"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </p>
 }
+@*@if (TempData.ContainsKey("messageEditCustomer"))
+{
+    <p class="alert alert-success">
+        @TempData["messageEditCustomer"]
+    </p>
+}*@
 @if (TempData.ContainsKey("messageDeleteCustomer"))
 {
-    <p class="alert alert-danger">@TempData["messageDeleteCustomer"]</p>
+    <p class="alert alert-danger alert-dismissible fade show">
+        @TempData["messageDeleteCustomer"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </p>
 }
+
+@*<script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-1.9.0.min.js"></script>
+    <script>
+        $(function () {
+            $(".showModal").on("click", function (e) {
+                let url = $(e.currentTarget).attr('href')
+
+                $.get(url, function (data) {
+                    $('#contentModal').html(data)
+                })
+            })
+
+            $("#modalCustomers").on("hidden.bs.modal", () => $("#contentModal").empty())
+        })
+    </script>*@

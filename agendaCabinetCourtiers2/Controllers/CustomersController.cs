@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -12,7 +13,7 @@ namespace agendaCabinetCourtiers2.Controllers
 {
     public class CustomersController : Controller
     {
-        private agendaEntities db = new agendaEntities();
+        private readonly agendaEntities db = new agendaEntities();
 
         // GET: Customers
         [ActionName("ListCustomers")]
@@ -63,19 +64,19 @@ namespace agendaCabinetCourtiers2.Controllers
         }
 
         // GET: Customers/EditCustomer/5
-        /*public ActionResult EditCustomer(int? id)
+        public ActionResult EditCustomer(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            customers customers = db.customers.Find(id);
-            if (customers == null)
+            customers customer = db.customers.Find(id);
+            if (customer == null)
             {
                 return HttpNotFound();
             }
-            return View(customers);
-        }*/
+            return PartialView(customer);
+        }
 
         // action Edit
         // POST: Customers/EditCustomer/5
@@ -85,27 +86,66 @@ namespace agendaCabinetCourtiers2.Controllers
         {
             if (ModelState.IsValid)
             {
+                if(customer.budget == null)
+                {
+                    customer.budget = 0;
+                }
                 db.Entry(customer).State = EntityState.Modified;
                 db.SaveChanges();
                 TempData["messageEditCustomer"] = "Client modifié";
-                TempData["errorForm"] = 0;
-                return RedirectToAction("ProfilCustomer/" + customer.idCustomers);
+                /*TempData["errorForm"] = 0;*/
+                /*return RedirectToAction("ProfilCustomer/" + customer.idCustomers);*/
+                return Json(new { success = true, response = "/Customers/ProfilCustomer/" + customer.idCustomers });
             }
-            TempData["defaultBudget"] = customer.budget;
-            TempData["errorForm"] = 1;
-            return View("ProfilCustomer", customer);
+            /*TempData["defaultBudget"] = customer.budget;*/
+            /*TempData["errorForm"] = 1;*/
+            /*return View("ProfilCustomer", customer);*/
+            /*return PartialView(customer);*/
+            return Json(new { success = false, errors = ModelState.Values.SelectMany(x => x.Errors ).Select(x => x.ErrorMessage).ToList() });
+        }
+
+        // GET: 
+        public ActionResult DeleteCustomer(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            customers customer = db.customers.Find(id);
+            if (customer == null)
+            {
+                return HttpNotFound();
+            }
+            return PartialView("DeleteCustomer", customer);
+        }
+
+        public ActionResult ModalDeleteAction(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            customers customer = db.customers.Find(id);
+            if (customer == null)
+            {
+                return HttpNotFound();
+            }
+            return PartialView("ModalDeleteContent", customer);
         }
 
         // action Delete
-        // GET: Customers/DeleteCustomer/5
-        public ActionResult DeleteCustomer(int id)
+        // POST: Customers/DeleteCustomer/5
+        [HttpPost, ActionName("DeleteCustomer")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteCustomerConfirmed(int id)
         {
-            customers customers = db.customers.Find(id);
-            db.customers.Remove(customers);
+            customers customer = db.customers.Find(id);
+            db.customers.Remove(customer);
             db.SaveChanges();
             TempData["messageDeleteCustomer"] = "Client supprimé";
             return RedirectToAction("ListCustomers");
         }
+        
 
         protected override void Dispose(bool disposing)
         {
