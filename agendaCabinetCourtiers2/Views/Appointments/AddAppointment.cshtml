@@ -1,0 +1,80 @@
+﻿@model agendaCabinetCourtiers2.Models.appointments
+
+@{
+    ViewBag.Title = "Ajouter un rendez-vous";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Ajouter un rendez-vous@* / @ViewBag.info / @ViewBag.info3 / @ViewBag.info2 / @ViewBag.info4*@ / @ViewBag.info5 / @ViewBag.info6</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Rendez-vous</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.dateHour, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.dateHour, new { htmlAttributes = new { @class = "form-control", @type = "datetime-local" } })
+                @Html.ValidationMessageFor(model => model.dateHour, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.subject, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.subject, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.subject, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.idBroker, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @if (TempData.ContainsKey("getId"))
+                {
+                    @*@Html.HiddenFor(model => model.idBroker)*@
+                    @*@Html.DropDownList("idBroker", null, "-- Sélectionner un courtier --", htmlAttributes: new { @class = "form-control", @disabled = "disabled" })*@
+                    @Html.DropDownList("idBroker", null, "-- Sélectionner un courtier --", htmlAttributes: new { @class = "form-control" })
+                    @*<input type="text" value="@ViewBag.fullname" class="form-control" disabled />*@
+                }
+                else
+                {
+                    @Html.DropDownList("idBroker", null, "-- Sélectionner un courtier --", htmlAttributes: new { @class = "form-control" })
+                }
+                @Html.ValidationMessageFor(model => model.idBroker, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.idCustomers, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("idCustomers", null, "-- Sélectionner un client --", htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.idCustomers, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group mt-5">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Ajouter" class="btn btn-primary" />
+                <input type="reset" value="Annuler" class="btn btn-danger" />
+            </div>
+        </div>
+    </div>
+}
+
+@if (TempData.ContainsKey("error"))
+{
+    <p class="alert alert-danger alert-dismissible fade show">
+        @TempData["error"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </p>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index", "Home")
+</div>

@@ -13,13 +13,11 @@ namespace agendaCabinetCourtiers2.Controllers
     {
         private readonly agendaEntities db = new agendaEntities();
 
-        [ActionName("ListBrokers")]
-        public ActionResult Index()
+        [ActionName("Index")]
+        public ActionResult ListBrokers()
         {
             IEnumerable<brokers> brokers = db.brokers.ToList();
-            return View(brokers);
-
-            /*return View(db.brokers.ToList());*/
+            return View("ListBrokers", brokers);
         }
 
         // GET: AddBroker
@@ -38,7 +36,7 @@ namespace agendaCabinetCourtiers2.Controllers
                 db.brokers.Add(broker);
                 db.SaveChanges();
                 TempData["messageAddBroker"] = "Courtier ajouté";
-                return RedirectToAction("ListBrokers");
+                return RedirectToAction("Index");
             }
 
             return View(broker);
@@ -60,29 +58,76 @@ namespace agendaCabinetCourtiers2.Controllers
             return View(broker);
         }
 
+        // GET:brokers/EditBroker/5
+        public ActionResult EditBroker(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            brokers broker = db.brokers.Find(id);
+            if (broker == null)
+            {
+                return HttpNotFound();
+            }
+            return PartialView(broker);
+        }
+
+        // action Edit
+        // POST: brokers/EditBroker/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditBroker(brokers broker)
+        public ActionResult EditBroker([Bind(Include = "idBroker,lastname,firstname,mail,phoneNumber")] brokers broker)
         {
             if (ModelState.IsValid)
             {
                 db.Entry(broker).State = EntityState.Modified;
                 db.SaveChanges();
                 TempData["messageEditBroker"] = "Courtier modifié";
-                TempData["errorForm"] = 0;
-                return RedirectToAction("ProfilBroker/" + broker.idBroker);
+                /*TempData["errorForm"] = 0;*/
+                /*return RedirectToAction("ProfilBroker/" + broker.idBroker);*/
+                return Json(new { success = true, response = "/brokers/ProfilBroker/" + broker.idBroker });
             }
-            TempData["errorForm"] = 1;
-            return View("ProfilBroker", broker);
+            /*TempData["errorForm"] = 1;*/
+            /*return View("ProfilBroker", broker);*/
+            return Json(new { success = false, errors = ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage).ToList() });
         }
 
-        public ActionResult DeleteBroker(int Id)
+        // GET
+        public ActionResult DeleteBroker(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            brokers broker = db.brokers.Find(id);
+            if (broker == null)
+            {
+                return HttpNotFound();
+            }
+            return PartialView("DeleteBroker", broker);
+        }
+
+        /*public ActionResult DeleteBroker(int Id)
         {
             brokers broker = db.brokers.Find(Id);
             db.brokers.Remove(broker);
             db.SaveChanges();
             TempData["messageDeleteBroker"] = "Courtier supprimé";
-            return RedirectToAction("ListBrokers");
+            return RedirectToAction("Index");
+        }*/
+
+        // action Delete
+        // POST: Customers/DeleteCustomer/5
+        [HttpPost, ActionName("DeleteBroker")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteBrokerConfirmed(int id)
+        {
+            brokers broker = db.brokers.Find(id);
+            db.brokers.Remove(broker);
+            db.SaveChanges();
+            TempData["messageDeleteBroker"] = "Courtier supprimé";
+            return RedirectToAction("Index");
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿@model agendaCabinetCourtiers2.Models.brokers
 
-<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="titleDeleteBroker" aria-hidden="true">
+@*<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="titleDeleteBroker" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
@@ -13,9 +13,26 @@
                 <h5 class="text-center">@Html.DisplayFor(model => model.lastname) @Html.DisplayFor(model => model.firstname)</h5>
             </div>
             <div class="modal-footer">
-                @Html.ActionLink("Supprimer", "DeleteBroker", new { id = Model.idBroker }, new { @class="btn btn-danger" })
+                @Html.ActionLink("Supprimer", "DeleteBroker", new { id = Model.idBroker }, new { @class = "btn btn-danger" })
                 <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
             </div>
         </div>
     </div>
+</div>*@
+
+<div class="modal-header">
+    <h3 class="modal-title" id="titleModal">Confirmation</h3>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 </div>
+@using (Html.BeginForm("DeleteBroker", "brokers", new { id = Model.idBroker }))
+{
+    @Html.AntiForgeryToken()
+    <div class="modal-body">
+        <h4 class="fs-5">Etes-vous sûr de vouloir supprimer ce courtier ?</h4>
+        <p class="fw-bolder text-danger my-3">@Html.DisplayFor(model => model.lastname) @Html.DisplayFor(model => model.firstname)</p>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-danger">Supprimer</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+    </div>
+}

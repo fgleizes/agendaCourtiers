@@ -1,0 +1,59 @@
+﻿@model IEnumerable<agendaCabinetCourtiers2.Models.appointments>
+
+@{
+    ViewBag.Title = "Index - Liste des rendez-vous";
+}
+
+<p>
+    @Html.ActionLink("Create New", "AddAppointment")
+</p>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.dateHour)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.subject)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.brokers.fullname)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.customers.fullname)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Convert.ToDateTime(item.dateHour).ToString("dd-MM-yyyy HH:mm")
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.subject)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.brokers.fullname)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.customers.fullname)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "EditAppointment", new { id=item.idAppointment }) |
+            @Html.ActionLink("Details", "DetailsAppointment", new { id=item.idAppointment }) |
+            @Html.ActionLink("Delete", "DeleteAppointment", new { id=item.idAppointment })
+        </td>
+    </tr>
+}
+
+</table>
+
+@if (TempData.ContainsKey("success"))
+{
+    <p class="alert alert-success alert-dismissible fade show">
+        @TempData["messageAddAppointment"]
+        @TempData["messageEditAppointment"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </p>
+}

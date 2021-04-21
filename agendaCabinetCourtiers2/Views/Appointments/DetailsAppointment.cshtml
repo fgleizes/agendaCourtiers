@@ -1,0 +1,52 @@
+﻿@model agendaCabinetCourtiers2.Models.appointments
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>appointments</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.dateHour)
+        </dt>
+
+        <dd>
+            @*@Html.DisplayFor(model => model.dateHour)*@
+            @Convert.ToDateTime(Model.dateHour).ToString("dd-MM-yyyy HH:mm")
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.subject)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.subject)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.brokers.fullname)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.brokers.fullname)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.customers.fullname)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.customers.fullname)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.idAppointment }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

@@ -11,13 +11,27 @@ namespace agendaCabinetCourtiers2.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class appointments
     {
         public int idAppointment { get; set; }
+
+        [Required]
+        [Display(Name = "Date et heure")]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-ddTHH:mm}", ApplyFormatInEditMode = true)]
         public System.DateTime dateHour { get; set; }
+
+        [Required]
+        [Display(Name = "Objet")]
         public string subject { get; set; }
+
+        [Required]
+        [Display(Name = "Courtier")]
         public int idBroker { get; set; }
+
+        [Required]
+        [Display(Name = "Client")]
         public int idCustomers { get; set; }
     
         public virtual brokers brokers { get; set; }

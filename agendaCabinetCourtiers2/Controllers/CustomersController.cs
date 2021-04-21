@@ -16,11 +16,42 @@ namespace agendaCabinetCourtiers2.Controllers
         private readonly agendaEntities db = new agendaEntities();
 
         // GET: Customers
-        [ActionName("ListCustomers")]
-        public ActionResult Index()
+        [ActionName("Index")]
+        public ActionResult ListCustomers()
         {
-            IEnumerable<customers> customers = db.customers.SqlQuery("SELECT iDcustomers,lastname,firstname,mail,phoneNumber,budget FROM customers ORDER BY lastname ASC").ToList();
-            return View(customers);
+            /*IEnumerable<customers> customers = db.customers.SqlQuery("SELECT idCustomers,lastname,firstname,mail,phoneNumber,budget FROM customers ORDER BY lastname ASC").ToList();
+            return View("ListCustomers", customers);*/
+
+            IEnumerable<customers> customers = db.customers.ToList();
+            return View("ListCustomers", customers);
+        }
+
+        /*public ActionResult GridListCustomers()
+        {
+            List<customers> customers = db.customers.ToList();
+
+            if (customers.Count > 0)
+            {
+                return PartialView("GridListCustomers", customers);
+            }
+            else
+            {
+                return Json("No Record Found");
+            }
+        }*/
+        
+        [HttpPost, ActionName("Index")]
+        public ActionResult GridListCustomers(string name)
+        {
+            List<customers> customers = db.customers.Where(customer => customer.lastname.Contains(name) || customer.firstname.Contains(name) || customer.idCustomers.St).ToList();
+            if (customers.Count > 0)
+            {
+                return PartialView("GridListCustomers", customers);
+            }
+            else
+            {
+                return Json( new { success = false, message = "Aucun résultat trouvé" } );
+            }
         }
 
         // Action Create
@@ -41,7 +72,7 @@ namespace agendaCabinetCourtiers2.Controllers
                 db.customers.Add(customer);
                 db.SaveChanges();
                 TempData["messageAddCustomer"] = "Client ajouté";
-                return RedirectToAction("ListCustomers");
+                return RedirectToAction("Index");
             }
             TempData["defaultBudget"] = customer.budget;
             return View(customer);
@@ -93,14 +124,8 @@ namespace agendaCabinetCourtiers2.Controllers
                 db.Entry(customer).State = EntityState.Modified;
                 db.SaveChanges();
                 TempData["messageEditCustomer"] = "Client modifié";
-                /*TempData["errorForm"] = 0;*/
-                /*return RedirectToAction("ProfilCustomer/" + customer.idCustomers);*/
                 return Json(new { success = true, response = "/Customers/ProfilCustomer/" + customer.idCustomers });
             }
-            /*TempData["defaultBudget"] = customer.budget;*/
-            /*TempData["errorForm"] = 1;*/
-            /*return View("ProfilCustomer", customer);*/
-            /*return PartialView(customer);*/
             return Json(new { success = false, errors = ModelState.Values.SelectMany(x => x.Errors ).Select(x => x.ErrorMessage).ToList() });
         }
 
@@ -119,20 +144,6 @@ namespace agendaCabinetCourtiers2.Controllers
             return PartialView("DeleteCustomer", customer);
         }
 
-        public ActionResult ModalDeleteAction(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            customers customer = db.customers.Find(id);
-            if (customer == null)
-            {
-                return HttpNotFound();
-            }
-            return PartialView("ModalDeleteContent", customer);
-        }
-
         // action Delete
         // POST: Customers/DeleteCustomer/5
         [HttpPost, ActionName("DeleteCustomer")]
@@ -143,7 +154,7 @@ namespace agendaCabinetCourtiers2.Controllers
             db.customers.Remove(customer);
             db.SaveChanges();
             TempData["messageDeleteCustomer"] = "Client supprimé";
-            return RedirectToAction("ListCustomers");
+            return RedirectToAction("Index");
         }
         
 

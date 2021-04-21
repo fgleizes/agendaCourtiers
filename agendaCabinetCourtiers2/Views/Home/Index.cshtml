@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewBag.Title = "Home - Agenda";
 }
@@ -10,11 +9,15 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>AddBroker</title>
+    <title>ViewBag.Title</title>
 </head>
 <body>
     <div>
-        <h2 class="mt-5">@ViewBag.Title</h2>
+        <h2 class="my-5">@ViewBag.Title</h2>
+
+        @{
+            Html.RenderAction("Index", "Appointments");
+        }
     </div>
 </body>
 </html>

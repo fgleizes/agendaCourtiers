@@ -42,7 +42,10 @@ namespace agendaCabinetCourtiers2.Models
         [Display(Name = "Téléphone")]
         [RegularExpression(@"^(?:(?:\+|00)33|0)\s*[1-9](?:[\s.-]*\d{2}){4}$", ErrorMessage = "Le numéro de téléphone n'est pas valide.")]
         public string phoneNumber { get; set; }
-    
+
+        [Display(Name = "Courtier")]
+        public string fullname => $"{lastname} {firstname}";
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<appointments> appointments { get; set; }
     }

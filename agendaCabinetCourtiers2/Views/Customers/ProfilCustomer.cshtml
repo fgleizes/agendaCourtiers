@@ -28,27 +28,14 @@
             @*<button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#detailsModal"><i class="fa fa-pencil" aria-hidden="true"></i></button>*@
             @*<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="fa fa-trash" aria-hidden="true"></i></button>*@
             <a href="@Url.Action("EditCustomer", "Customers", new { id = Model.idCustomers })" title="Modifier le client" class="btn btn-outline-dark showModal" type="button" data-bs-toggle="modal" data-bs-target="#modalCustomers"><i class="fa fa-pencil" aria-hidden="true"></i></a>
-            <a href="@Url.Action("ModalDeleteAction", "Customers", new { id = Model.idCustomers })" title="Supprimer le client" class="btn btn-danger showModal" type="button" data-bs-toggle="modal" data-bs-target="#modalCustomers"><i class="fa fa-trash" aria-hidden="true"></i></a>
+            <a href="@Url.Action("DeleteCustomer", "Customers", new { id = Model.idCustomers })" title="Supprimer le client" class="btn btn-danger showModal" type="button" data-bs-toggle="modal" data-bs-target="#modalCustomers"><i class="fa fa-trash" aria-hidden="true"></i></a>
         </div>
     </div>
 </div>
 
 <div class="modal fade" id="modalCustomers" tabindex="-1" aria-labelledby="titleModal" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content" id="contentModal">
-            @*<div class="modal-header">
-                <h3 class="modal-title" id="titleModal">Titre du modal</h3>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="row g-3 my-3">
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="submit" class="btn btn-success">Modifier</button>
-                <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-            </div>*@
-        </div>
+        <div class="modal-content" id="contentModal"></div>
     </div>
 </div>
 

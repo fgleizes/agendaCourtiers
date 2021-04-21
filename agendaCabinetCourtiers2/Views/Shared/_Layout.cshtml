@@ -20,8 +20,8 @@
                     <li class="nav-item">@Html.ActionLink("Ajouter un courtier", "AddBroker", "brokers", new { area = "" }, new { @class = "nav-link" })</li>
                     <li class="nav-item">@Html.ActionLink("Ajouter un client", "AddCustomer", "Customers", new { area = "" }, new { @class = "nav-link" })</li>
                     <li class="nav-item">@Html.ActionLink("Ajouter un rendez-vous", "AddAppointment", "Appointments", new { area = "" }, new { @class = "nav-link" })</li>
-                    <li class="nav-item">@Html.ActionLink("Liste des courtiers", "ListBrokers", "brokers", new { area = "" }, new { @class = "nav-link" })</li>
-                    <li class="nav-item">@Html.ActionLink("Liste des clients", "ListCustomers", "Customers", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li class="nav-item">@Html.ActionLink("Liste des courtiers", "Index", "brokers", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li class="nav-item">@Html.ActionLink("Liste des clients", "Index", "Customers", new { area = "" }, new { @class = "nav-link" })</li>
                 </ul>
             </div>
         </div>
@@ -31,6 +31,7 @@
 
     <div class="container body-content">
         @RenderBody()
+
         <hr />
         <footer>
             <p>&copy; @DateTime.Now.Year - Agenda Cabinet Courtiers Application</p>
@@ -38,7 +39,7 @@
     </div>
 
     <script src="~/Scripts/bootstrap.bundle.min.js"></script>
-    <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-1.9.0.min.js"></script>
+    @*<script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-1.9.0.min.js"></script>*@
     <script src="~/Scripts/JavaScript.js"></script>
 </body>
 </html>

@@ -3,15 +3,13 @@
 @{
     ViewBag.Title = "Détails du courtier";
     Layout = "~/Views/Shared/_Layout.cshtml";
-}
 
-@{
-    Html.RenderPartial("EditBroker");
-    Html.RenderPartial("DeleteBroker");
+    @*Html.RenderPartial("EditBroker");
+    Html.RenderPartial("DeleteBroker");*@
 }
 
 <p class="my-5">
-    @Html.ActionLink("Retour à la liste", "ListBrokers", "brokers", new { area = "" }, new { @class = "btn btn-outline-secondary" })
+    @Html.ActionLink("Retour à la liste", "Index", new { area = "" }, new { @class = "btn btn-outline-secondary" })
 </p>
 <div class="card text-center my-3">
     <div class="card-header position-relative">
@@ -25,8 +23,16 @@
         <p class="card-text">@Html.DisplayNameFor(model => model.phoneNumber) : <a href="tel:@Html.DisplayFor(model => model.phoneNumber)" title="Appeler le numéro de téléphone">@Html.DisplayFor(model => model.phoneNumber)</a></p>
     </div>
     <div class="card-footer">
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#detailsModal">Modifier</button>
-        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">Supprimer</button>
+        @*<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#detailsModal">Modifier</button>
+        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">Supprimer</button>*@
+        <a href="@Url.Action("EditBroker", "brokers", new { id = Model.idBroker })" title="Modifier le courtier" class="btn btn-outline-dark showModal" type="button" data-bs-toggle="modal" data-bs-target="#modalBrokers"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+        <a href="@Url.Action("DeleteBroker", "brokers", new { id = Model.idBroker })" title="Supprimer le courtier" class="btn btn-danger showModal" type="button" data-bs-toggle="modal" data-bs-target="#modalBrokers"><i class="fa fa-trash" aria-hidden="true"></i></a>
+    </div>
+</div>
+
+<div class="modal fade" id="modalBrokers" tabindex="-1" aria-labelledby="titleModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" id="contentModal"></div>
     </div>
 </div>
 

@@ -1,0 +1,30 @@
+﻿@model  IEnumerable<agendaCabinetCourtiers2.Models.customers>
+
+@{
+    if (Model != null && Model.Count() > 0)
+    {
+        WebGrid grid = new WebGrid(Model, canPage: true, rowsPerPage: 2, selectionFieldName: "selectedRow");
+        @*grid.Pager(WebGridPagerModes.All, numericLinksCount: Model.Count());*@
+        @grid.GetHtml(tableStyle: "webGrid table table-striped table-hover align-middle my-3",
+        headerStyle: "header",
+        footerStyle: "table-pager",
+        columns: grid.Columns(
+            grid.Column("lastname", "Nom"),
+            grid.Column("firstname", "Prénom"),
+            grid.Column("mail", "Email", format: @<text><a href="mailto:@item.mail" title="envoyer un mail au client">@item.mail</a></text>),
+                grid.Column("phoneNumber", "Téléphone", format: @<text><a href="tel:@item.phoneNumber" title="appeler le client">@item.phoneNumber</a></text>),
+                grid.Column("budget", "Budget"),
+                grid.Column("", "", format:
+                @<text>
+                    <a href="@Url.Action("ProfilCustomer", "Customers", new { id = item.idCustomers })" title="Consulter le détail du client" class="btn btn-outline-secondary"><i class="fa fa-search" aria-hidden="true"></i></a>
+                    <a href="@Url.Action("EditCustomer", "Customers", new { id = item.idCustomers })" title="Modifier le client" class="btn btn-outline-dark showModal" type="button" @*data-bs-toggle="modal" data-bs-target="#modalCustomers"*@><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                    <a href="@Url.Action("DeleteCustomer", "Customers", new { id = item.idCustomers })" title="Supprimer le client" class="btn btn-danger showModal" type="button" @*data-bs-toggle="modal" data-bs-target="#modalCustomers"*@><i class="fa fa-trash" aria-hidden="true"></i></a>
+                </text>
+                )
+            )
+        );
+    } else
+    {
+        @:There are no customers.
+    }
+}

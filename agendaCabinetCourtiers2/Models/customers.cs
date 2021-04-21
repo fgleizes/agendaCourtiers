@@ -45,7 +45,10 @@ namespace agendaCabinetCourtiers2.Models
 
         [Display(Name = "Budget")]
         public int? budget { get; set; }
-    
+
+        [Display(Name = "Client")]
+        public string fullname => $"{lastname} {firstname}";
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<appointments> appointments { get; set; }
     }

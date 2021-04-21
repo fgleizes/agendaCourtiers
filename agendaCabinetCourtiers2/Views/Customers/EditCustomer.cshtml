@@ -1,157 +1,48 @@
 ﻿@model agendaCabinetCourtiers2.Models.customers
 
-@{
-    @*ViewBag.Title = "Modifier le client";*@
-    @*ViewBag.defaultBudget = Model.budget;*@
-    @*if (TempData.ContainsKey("defaultBudget"))
-    {
-        ViewBag.defaultBudget = TempData["defaultBudget"];
-    }*@
-}
-
-@*<div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="editCustomer" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">*@
-            <div class="modal-header">
-                <h3 class="modal-title" id="titleModal">Modifier le client</h3>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+<div class="modal-header">
+    <h3 class="modal-title" id="titleModal">Modifier le client</h3>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+@using (Html.BeginForm("EditCustomer", "Customers", "", FormMethod.Post, new { @class="editForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.idCustomers)
+    <div class="modal-body">
+        <div class="row g-3 mb-3">
+            @*@Html.ValidationSummary(true, "Veuillez corriger les erreurs et re-valider le formulaire.", new { @class = "text-danger" })*@
+            <div class="validation-summary-valid text-danger">
+                <ul class="m-0 d-inline-block"></ul>
             </div>
-            @using (Html.BeginForm("EditCustomer", "Customers", "", FormMethod.Post, new { @class="editForm" }))
-            {
-                @Html.AntiForgeryToken()
-                @Html.HiddenFor(model => model.idCustomers)
-                <div class="modal-body">
-                    <div class="row g-3 mb-3">
-                        @*@Html.ValidationSummary(true, "Veuillez corriger les erreurs et re-valider le formulaire.", new { @class = "text-danger" })*@
-                        <div class="validation-summary-valid text-danger">
-                            <ul class="m-0"></ul>
-                        </div>
-                        <div>
-                            @Html.LabelFor(model => model.lastname, htmlAttributes: new { @class = "control-label" })
-                            @Html.EditorFor(model => model.lastname, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.lastname, "", new { @class = "text-danger" })
-                        </div>
-                        <div>
-                            @Html.LabelFor(model => model.firstname, htmlAttributes: new { @class = "control-label" })
-                            @Html.EditorFor(model => model.firstname, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.firstname, "", new { @class = "text-danger" })
-                        </div>
-                        <div>
-                            @Html.LabelFor(model => model.mail, htmlAttributes: new { @class = "control-label" })
-                            @Html.EditorFor(model => model.mail, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.mail, "", new { @class = "text-danger" })
-                        </div>
-                        <div>
-                            @Html.LabelFor(model => model.phoneNumber, htmlAttributes: new { @class = "control-label" })
-                            @Html.EditorFor(model => model.phoneNumber, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.phoneNumber, "", new { @class = "text-danger" })
-                        </div>
-                        <div>
-                            @Html.LabelFor(model => model.budget, htmlAttributes: new { @class = "control-label" })
-                            @Html.EditorFor(model => model.budget, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.budget, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-success">Modifier</button>
-                    <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                </div>
-            }
-        @*</div>
+            <div>
+                @Html.LabelFor(model => model.lastname, htmlAttributes: new { @class = "control-label" })
+                @Html.EditorFor(model => model.lastname, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.lastname, "", new { @class = "text-danger d-inline-block" })
+            </div>
+            <div class="mt-0">
+                @Html.LabelFor(model => model.firstname, htmlAttributes: new { @class = "control-label" })
+                @Html.EditorFor(model => model.firstname, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.firstname, "", new { @class = "text-danger d-inline-block" })
+            </div>
+            <div class="mt-0">
+                @Html.LabelFor(model => model.mail, htmlAttributes: new { @class = "control-label" })
+                @Html.EditorFor(model => model.mail, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.mail, "", new { @class = "text-danger d-inline-block" })
+            </div>
+            <div class="mt-0">
+                @Html.LabelFor(model => model.phoneNumber, htmlAttributes: new { @class = "control-label" })
+                @Html.EditorFor(model => model.phoneNumber, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.phoneNumber, "", new { @class = "text-danger d-inline-block" })
+            </div>
+            <div class="mt-0">
+                @Html.LabelFor(model => model.budget, htmlAttributes: new { @class = "control-label" })
+                @Html.EditorFor(model => model.budget, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.budget, "", new { @class = "text-danger d-inline-block" })
+            </div>
+        </div>
     </div>
-</div>*@
-
-@*<script>
-    $(function () {
-        $(".editForm").on("submit", function (e) {
-            e.preventDefault()
-            let url = $(e.currentTarget).attr('action')
-            let formValues = $(e.currentTarget).serialize();
-
-            $.ajax({
-                url: url,
-                type: 'POST',
-                dataType: 'json',
-                data: formValues,
-                success: function (data) {
-                    if (data.success == true) {
-                        window.location.reload(true)
-                    } else {
-                        displayValidationErrors(data.errors)
-                    }
-                },
-                error: function () {
-                    console.log("xhr error")
-                }
-            })
-        })
-
-        function displayValidationErrors(errors) {
-            let $ul = $('div.validation-summary-valid.text-danger > ul');
-
-            $ul.empty();*@
-            @*$.each(errors, function (idx, errorMessage) {
-                $ul.append('<li>' + errorMessage + '</li>');
-            });*@
-
-            @*$ul.append('<li>Veuillez corriger les erreurs et re-valider le formulaire.</li>');
-
-            let inputs = $('.editForm .form-control')
-
-            inputs.each(function (index, input) {
-                let fieldValidation = input.nextElementSibling
-
-                if (fieldValidation.hasChildNodes()) {
-                    fieldValidation.removeChild(fieldValidation.firstChild)
-                }
-
-                if (input.dataset.valRequired && input.value == "") {
-                    let span = document.createElement("span");
-                    span.innerHTML = input.dataset.valRequired
-                    fieldValidation.append(span)
-
-                } else if (input.dataset.valRegexPattern && !input.value.match(input.dataset.valRegexPattern)) {
-                    let span = document.createElement("span");
-                    span.innerHTML = input.dataset.valRegex
-                    fieldValidation.append(span)
-
-                } else if (input.dataset.valLengthMax && input.value.length > 50) {
-                    let span = document.createElement("span");
-                    span.innerHTML = input.dataset.valLength
-                    fieldValidation.append(span)
-                }
-            })
-        }
-
-        $(".editForm input").on("input", function (e) {
-            let inputs = $('.editForm .form-control')
-
-            inputs.each(function (index, input) {
-                let fieldValidation = input.nextElementSibling
-
-                if (fieldValidation.hasChildNodes()) {
-                    fieldValidation.removeChild(fieldValidation.firstChild)
-                }
-
-                if (input.dataset.valRequired && input.value == "") {
-                    let span = document.createElement("span");
-                    span.innerHTML = input.dataset.valRequired
-                    fieldValidation.append(span)
-
-                } else if (input.dataset.valRegexPattern && !input.value.match(input.dataset.valRegexPattern)) {
-                    let span = document.createElement("span");
-                    span.innerHTML = input.dataset.valRegex
-                    fieldValidation.append(span)
-
-                } else if (input.dataset.valLengthMax && input.value.length > 50) {
-                    let span = document.createElement("span");
-                    span.innerHTML = input.dataset.valLength
-                    fieldValidation.append(span)
-                }
-            })
-        })
-
-        $("#modalCustomers").on("hidden.bs.modal", () => $("#contentModal").empty())
-    })
-</script>*@
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-success">Modifier</button>
+        <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+    </div>
+}

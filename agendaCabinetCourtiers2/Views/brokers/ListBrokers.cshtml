@@ -46,17 +46,44 @@
             </td>
 
             <td>
-                @Html.ActionLink("Voir détails", "ProfilBroker", new { id = broker.idBroker }, new { @class = "btn btn-outline-info" })
+                @*@Html.ActionLink("Voir détails", "ProfilBroker", new { id = broker.idBroker }, new { @class = "btn btn-outline-info" })*@
+
+                <a href="@Url.Action("ProfilBroker", "brokers", new { id = broker.idBroker })" title="Consulter le détail du courtier" class="btn btn-outline-secondary"><i class="fa fa-search" aria-hidden="true"></i></a>
+                <a href="@Url.Action("EditBroker", "brokers", new { id = broker.idBroker })" title="Modifier le courtier" class="btn btn-outline-dark showModal" type="button" data-bs-toggle="modal" data-bs-target="#modalBrokers"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                @*<a href="@Url.Action("DeleteBroker", "brokers", new { id = broker.idBroker })" title="Supprimer le courtier" class="btn btn-danger showModal" type="button" data-bs-toggle="modal" data-bs-target="#modalBrokers"><i class="fa fa-trash" aria-hidden="true"></i></a>*@
+                <a href="@Url.Action("AddAppointment", "Appointments", new { id = broker.idBroker })" title="Ajouter un rendez-vous" class="btn btn-success" type="button" @*data-bs-toggle="modal" data-bs-target="#modalBrokers"*@><i class="fa fa-plus" aria-hidden="true"></i></a>
             </td>
         </tr>
     }
 </table>
 
-@if (TempData.ContainsKey("messageAddBroker"))
+<div class="modal fade" id="modalBrokers" tabindex="-1" aria-labelledby="titleModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" id="contentModal"></div>
+    </div>
+</div>
+
+@if (TempData.ContainsKey("messageAddBroker") || TempData.ContainsKey("messageEditBroker"))
+{
+    <p class="alert alert-success alert-dismissible fade show">
+        @TempData["messageAddBroker"]
+        @TempData["messageEditBroker"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </p>
+}
+@if (TempData.ContainsKey("messageDeleteBroker"))
+{
+    <p class="alert alert-danger alert-dismissible fade show">
+        @TempData["messageDeleteBroker"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </p>
+}
+
+@*@if (TempData.ContainsKey("messageAddBroker"))
 {
     <p class="alert alert-success">@TempData["messageAddBroker"]</p>
 }
 @if (TempData.ContainsKey("messageDeleteBroker"))
 {
     <p class="alert alert-danger">@TempData["messageDeleteBroker"]</p>
-}
+}*@

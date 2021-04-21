@@ -1,4 +1,4 @@
-﻿@model  IEnumerable<agendaCabinetCourtiers2.Models.customers>
+﻿@model IEnumerable<agendaCabinetCourtiers2.Models.customers>
 
 @{
     ViewBag.Title = "Liste des clients";
@@ -10,56 +10,87 @@
 <p>
     @Html.ActionLink("Ajouter un client", "AddCustomer", new { area = "" }, new { @class = "btn btn-outline-secondary" })
 </p>
-<div class="table-responsive">
-    <table class="table table-striped table-hover align-middle my-3">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.lastname)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.firstname)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.mail)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.phoneNumber)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.budget)
-                </th>
-                <th></th>
-            </tr>
-        </thead>
 
-        @foreach (var customer in Model)
+<script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-1.9.0.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('#txtName').on('input', function () {
+            console.log("click")
+            var lastName = $('#txtName').val();
+            $.ajax({
+                type: "POST",
+                url: "/Customers/",
+                data: { name: lastName },
+                datatype: "json",
+                success: function (data) {
+                    if (data.success == false) {
+                        @*alert('No Record Found');*@
+                        @*$('#gridContent').html('No Record Found');*@
+                        $('#gridContent').html(data.message);
+                    }
+                    else {
+                        console.log("ajax post ok")
+                        @*console.log(data)*@
+                        $('#gridContent').html(data);
+                        $('#txtName').val(lastName);
+                        $('#txtName').focus();
+                    }
+                }
+            })
+        })
+    })
+</script>
+
+
+<table>
+    <tr>
+        <td>
+            <input type="text" id="txtName" class="form-control" placeholder="Nom" />
+        </td>
+        @*<td>
+            <input type="button" id="bttnSearch" value="Search" class="btn btn-outline-dark" />
+        </td>*@
+    </tr>
+</table>
+
+<div id="gridContent">
+    @*@{
+        if (Model != null && Model.Count() > 0)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => customer.lastname)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => customer.firstname)
-                </td>
-                <td>
-                    <a href="mailto:@Html.DisplayFor(modelItem => customer.mail)" title="Envoyer un email">@Html.DisplayFor(modelItem => customer.mail)</a>
-                </td>
-                <td>
-                    <a href="tel:@Html.DisplayFor(modelItem => customer.phoneNumber)" title="Appeler le numéro de téléphone">@Html.DisplayFor(modelItem => customer.phoneNumber)</a>
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => customer.budget)€
-                </td>
-                <td>
-                    <a href="@Url.Action("ProfilCustomer", "Customers", new { id = customer.idCustomers })" title="Consulter le détail du client" class="btn btn-outline-secondary"><i class="fa fa-search" aria-hidden="true"></i></a>
-                    <a href="@Url.Action("EditCustomer", "Customers", new { id = customer.idCustomers })" title="Modifier le client" class="btn btn-outline-dark showModal" type="button" data-bs-toggle="modal" data-bs-target="#modalCustomers"><i class="fa fa-pencil" aria-hidden="true"></i></a>
-                    <a href="@Url.Action("ModalDeleteAction", "Customers", new { id = customer.idCustomers })" title="Supprimer le client" class="btn btn-danger showModal" type="button" data-bs-toggle="modal" data-bs-target="#modalCustomers"><i class="fa fa-trash" aria-hidden="true"></i></a>
-                </td>
-            </tr>
+            WebGrid grid = new WebGrid(Model, canPage: true, rowsPerPage: 3);
+            grid.Pager(WebGridPagerModes.All, numericLinksCount: Model.Count());
+
+            @grid.GetHtml(
+                tableStyle: "webGrid table table-striped table-hover align-middle my-3",
+                headerStyle: "header",
+                footerStyle: "table-pager",
+                mode: WebGridPagerModes.All,
+                numericLinksCount: Model.Count(),
+                columns: grid.Columns(
+                    grid.Column("lastname", "Nom", style: "lastname"),
+                    grid.Column("firstname", "Prénom", style: "firstname"),
+                    grid.Column("mail", "Email", style: "mail", format: @<text><a href="mailto:@item.mail" title="envoyer un mail au client">@item.mail</a></text>),
+                    grid.Column("phoneNumber", "Téléphone", style: "phoneNumber", format: @<text><a href="tel:@item.phoneNumber" title="appeler le client">@item.phoneNumber</a></text>),
+                    grid.Column("budget", "Budget", style: "budget"),
+                    grid.Column("", "", style: "buttons", format:
+                        @<text>
+                            <a href="@Url.Action("ProfilCustomer", "Customers", new { id = item.idCustomers })" title="Consulter le détail du client" class="btn btn-outline-secondary"><i class="fa fa-search" aria-hidden="true"></i></a>
+                            <a href="@Url.Action("EditCustomer", "Customers", new { id = item.idCustomers })" title="Modifier le client" class="btn btn-outline-dark showModal" type="button" data-bs-toggle="modal" data-bs-target="#modalCustomers"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                            <a href="@Url.Action("DeleteCustomer", "Customers", new { id = item.idCustomers })" title="Supprimer le client" class="btn btn-danger showModal" type="button" data-bs-toggle="modal" data-bs-target="#modalCustomers"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                        </text>
+                    )
+                )
+            );
         }
-    </table>
+        else
+        {
+            @:There are no customers.
+        }
+    }*@
+    @{Html.RenderPartial("GridListCustomers");}
 </div>
+
 
 <div class="modal fade" id="modalCustomers" tabindex="-1" aria-labelledby="titleModal" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -75,12 +106,6 @@
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </p>
 }
-@*@if (TempData.ContainsKey("messageEditCustomer"))
-{
-    <p class="alert alert-success">
-        @TempData["messageEditCustomer"]
-    </p>
-}*@
 @if (TempData.ContainsKey("messageDeleteCustomer"))
 {
     <p class="alert alert-danger alert-dismissible fade show">
@@ -88,18 +113,3 @@
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </p>
 }
-
-@*<script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-1.9.0.min.js"></script>
-    <script>
-        $(function () {
-            $(".showModal").on("click", function (e) {
-                let url = $(e.currentTarget).attr('href')
-
-                $.get(url, function (data) {
-                    $('#contentModal').html(data)
-                })
-            })
-
-            $("#modalCustomers").on("hidden.bs.modal", () => $("#contentModal").empty())
-        })
-    </script>*@
